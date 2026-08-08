@@ -1,0 +1,6 @@
+User-agent: *
+Allow: /
+Disallow: /admin-dashboard.html
+Disallow: /login.html
+
+Sitemap: https://rmsegoabang.up.railway.app/sitemap.xml
