@@ -1,0 +1,16 @@
+{
+  "name": "rm-sego-abang-print-agent",
+  "version": "1.0.0",
+  "description": "Print agent lokal untuk RM. Sego Abang Pendopo Wonomarto - jalan di komputer kasir/dapur, mencetak struk dapur dari antrean backend cloud.",
+  "main": "agent.js",
+  "scripts": {
+    "start": "node agent.js"
+  },
+  "dependencies": {
+    "dotenv": "^16.4.5",
+    "node-thermal-printer": "^4.4.4"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}
