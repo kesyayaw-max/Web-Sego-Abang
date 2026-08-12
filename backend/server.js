@@ -25,6 +25,24 @@ const { startTableCleanerCron } = require('./cron/tableCleaner');
 const app = express();
 const server = http.createServer(app);
 
+// Railway healthcheck — intentionally registered BEFORE CORS, rate limiting,
+// authentication and all application routes. It must always return HTTP 200
+// without requiring a token.
+const healthResponse = (req, res) => {
+  res.status(200).json({
+    success: true,
+    service: 'rm-sego-abang-pendopo-wonomarto-backend',
+    status: 'ok',
+    version: '2.3.0-phase7.5',
+    time: new Date().toISOString(),
+    uptime: Math.floor(process.uptime()) + 's',
+  });
+};
+
+app.get('/health', healthResponse);
+app.get('/api/health', healthResponse);
+
+
 // ---------------------------------------------------------------------
 // CORS — whitelist domain frontend dari env variable.
 // Fallback ke '*' hanya di development untuk kemudahan testing.
@@ -126,17 +144,6 @@ app.use(express.static(require('path').join(__dirname, '..', 'frontend'), {
 
 app.get('/', (req, res) => {
   res.sendFile(require('path').join(__dirname, '..', 'frontend', 'index.html'));
-});
-
-app.get('/api/health', (req, res) => {
-  res.json({
-    success: true,
-    service: 'rm-sego-abang-pendopo-wonomarto-backend',
-    status: 'ok',
-    version: '2.3.0-phase7',
-    time: new Date().toISOString(),
-    uptime: Math.floor(process.uptime()) + 's',
-  });
 });
 
 // 404 handler
