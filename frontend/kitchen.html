@@ -1,0 +1,11 @@
+<!doctype html>
+<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Dapur — RM Sego Abang</title>
+<style>body{font-family:system-ui,sans-serif;margin:0;padding:20px;background:#f6f6f6}.grid{display:grid;gap:16px;grid-template-columns:repeat(auto-fit,minmax(260px,1fr))}.card{background:white;border-radius:14px;padding:16px;box-shadow:0 2px 10px #0001}.actions button{margin:4px;padding:9px 12px;border:0;border-radius:8px;cursor:pointer}small{color:#666}</style>
+  <link rel="stylesheet" href="assets/phase75-ui.css">
+</head><body><header class="brandbar"><img src="assets/pendopo-wonomarto-logo.png" alt="Logo Pendopo Wonomarto"><div><strong>RM. Sego Abang</strong><small>Pendopo Wonomarto</small></div></header><h1>🍳 Kitchen Display</h1><p>Antrean pesanan dapur.</p><div id="grid" class="grid"></div>
+<script>
+const token=localStorage.getItem('sga_token');if(!token)location.href='/login.html';
+async function load(){const r=await fetch('/api/operations/kitchen',{headers:{Authorization:'Bearer '+token}});if(r.status===401){localStorage.removeItem('sga_token');location.href='/login.html';return}const data=await r.json();const el=document.getElementById('grid');el.innerHTML=data.map(o=>`<div class="card"><h2>${o.booking_code||'ORDER'}</h2><div>Meja: ${o.table_id||'-'}</div><div>Pelanggan: ${o.customer_name||'-'}</div><p><b>${o.kitchen_status}</b> · ${o.payment_status}</p><div class="actions">
+<button onclick="setS('${o.id}','COOKING')">Mulai</button><button onclick="setS('${o.id}','READY')">Siap</button><button onclick="setS('${o.id}','SERVED')">Disajikan</button><button onclick="setS('${o.id}','COMPLETED')">Selesai</button></div></div>`).join('')||'<p>Tidak ada antrean.</p>'}
+async function setS(id,status){await fetch('/api/operations/kitchen/'+id,{method:'PATCH',headers:{'Content-Type':'application/json','Authorization':'Bearer '+token},body:JSON.stringify({status})});load()} load(); setInterval(load,15000);
+</script></body></html>

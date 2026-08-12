@@ -1,0 +1,711 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="theme-color" content="#1B1410" />
+  <link rel="manifest" href="manifest.json" />
+  <link rel="apple-touch-icon" href="icon-192.png" />
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <title>Lacak Pesanan — RM. Sego Abang Pendopo Wonomarto</title>
+  <meta name="description" content="Cek status pesanan Anda di RM. Sego Abang Pendopo Wonomarto menggunakan kode booking." />
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,500;0,600;0,700;1,500&family=Plus+Jakarta+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --wood-950: #1B1410; --wood-900: #211815; --wood-800: #2C221C;
+      --wood-700: #3A2E26; --wood-600: #4A3B31;
+      --cream-100: #F4EDE0; --cream-200: #EDE3D3; --cream-300: #DCCDB2; --cream-400: #C8B89A;
+      --clay-400: #C1503F; --clay-500: #A63A2E; --clay-600: #8A2E24;
+      --brass-200: #EDD08A; --brass-300: #E0B968; --brass-400: #C9973E; --brass-500: #B07F2E;
+      --sage-400: #7FA678; --sage-500: #5B8C5A;
+      --turmeric-400: #E8B84B;
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background: var(--wood-950);
+      color: var(--cream-200);
+      min-height: 100vh;
+      display: flex; flex-direction: column; align-items: center;
+      padding: 1.5rem 1rem 4rem;
+    }
+    ::-webkit-scrollbar { width: 5px; }
+    ::-webkit-scrollbar-thumb { background: var(--wood-600); border-radius: 5px; }
+
+    /* BG */
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image:
+        repeating-linear-gradient(45deg, rgba(176,127,46,0.025) 0 1px, transparent 1px 28px),
+        repeating-linear-gradient(-45deg, rgba(176,127,46,0.025) 0 1px, transparent 1px 28px);
+      pointer-events: none; z-index: 0;
+    }
+    body::after {
+      content: ''; position: fixed;
+      width: 500px; height: 500px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(166,58,46,0.07) 0%, transparent 70%);
+      bottom: -200px; right: -150px; pointer-events: none; z-index: 0;
+    }
+
+    /* TOP NAV */
+    .top-nav {
+      width: 100%; max-width: 560px;
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 2rem;
+      position: relative; z-index: 1;
+    }
+    .top-nav a {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      color: var(--cream-300); text-decoration: none;
+      font-size: 0.82rem; font-weight: 600; transition: color 0.2s;
+    }
+    .top-nav a:hover { color: var(--brass-300); }
+    .top-nav-logo { display: flex; align-items: center; gap: 0.5rem; }
+    .top-nav-logo-icon {
+      width: 30px; height: 30px;
+      background: linear-gradient(135deg, var(--clay-500), var(--clay-600));
+      border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.9rem;
+    }
+    .top-nav-logo-text {
+      font-family: 'Fraunces', serif; font-size: 0.95rem; color: var(--cream-100);
+    }
+
+    /* HERO */
+    .hero-section {
+      width: 100%; max-width: 560px;
+      text-align: center; margin-bottom: 2rem;
+      position: relative; z-index: 1;
+    }
+    .hero-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .hero-title {
+      font-family: 'Fraunces', serif;
+      font-size: clamp(1.6rem, 4vw, 2.2rem);
+      color: var(--cream-100); margin-bottom: 0.625rem; line-height: 1.2;
+    }
+    .hero-desc { font-size: 0.9rem; color: var(--cream-400); line-height: 1.65; }
+
+    /* SEARCH CARD */
+    .search-card {
+      width: 100%; max-width: 560px;
+      background: var(--wood-900);
+      border: 1px solid var(--wood-700);
+      border-radius: 20px;
+      padding: 1.75rem;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3), 0 0 0 1px rgba(201,151,62,0.06);
+      margin-bottom: 1.5rem;
+      position: relative; z-index: 1;
+    }
+    .search-card::before {
+      content: ''; position: absolute; top: 0; left: 2rem; right: 2rem; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--brass-500), transparent);
+    }
+    .search-label {
+      font-size: 0.72rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--cream-400); margin-bottom: 0.625rem; display: block;
+    }
+    .search-row { display: flex; gap: 0.75rem; }
+    .search-input {
+      flex: 1;
+      background: var(--wood-800);
+      border: 1.5px solid var(--wood-700);
+      border-radius: 10px;
+      color: var(--cream-100);
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.95rem; font-weight: 500;
+      padding: 0.75rem 1rem;
+      outline: none;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      letter-spacing: 0.03em;
+      text-transform: uppercase;
+    }
+    .search-input::placeholder { color: var(--wood-600); font-family: 'Plus Jakarta Sans', sans-serif; font-size: 0.875rem; text-transform: none; letter-spacing: 0; }
+    .search-input:focus { border-color: var(--brass-400); box-shadow: 0 0 0 3px rgba(201,151,62,0.12); }
+    .search-btn {
+      background: linear-gradient(135deg, var(--clay-500), var(--clay-600));
+      border: none; border-radius: 10px;
+      color: var(--cream-100); font-family: 'Plus Jakarta Sans', sans-serif;
+      font-size: 0.875rem; font-weight: 700;
+      padding: 0.75rem 1.25rem; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      box-shadow: 0 4px 12px rgba(166,58,46,0.3);
+      white-space: nowrap;
+      display: flex; align-items: center; gap: 0.4rem;
+    }
+    .search-btn:hover:not(:disabled) { opacity: 0.88; transform: translateY(-1px); }
+    .search-btn:disabled { opacity: 0.55; cursor: not-allowed; }
+    .search-hint { font-size: 0.75rem; color: var(--cream-400); margin-top: 0.625rem; }
+    .search-hint code { font-family: 'JetBrains Mono', monospace; color: var(--brass-400); }
+
+    /* SPINNER */
+    .search-spinner {
+      display: inline-block; width: 14px; height: 14px;
+      border: 2px solid rgba(244,237,224,0.3); border-top-color: var(--cream-100);
+      border-radius: 50%; animation: spin 0.7s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    /* RESULT CARD */
+    .result-card {
+      display: none;
+      width: 100%; max-width: 560px;
+      background: var(--wood-900);
+      border: 1px solid var(--wood-700);
+      border-radius: 20px;
+      overflow: hidden;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+      position: relative; z-index: 1;
+      animation: slideUp 0.4s ease;
+    }
+    @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+
+    /* Status Header */
+    .result-status-header {
+      padding: 1.5rem 1.5rem 1.25rem;
+      display: flex; align-items: center; gap: 1rem;
+    }
+    .result-status-icon {
+      width: 52px; height: 52px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem; flex-shrink: 0;
+    }
+    .result-status-icon.pending { background: rgba(232,184,75,0.12); }
+    .result-status-icon.confirmed { background: rgba(91,140,90,0.12); }
+    .result-status-icon.expired { background: rgba(166,58,46,0.1); }
+
+    .result-status-info {}
+    .result-status-label {
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--cream-400); margin-bottom: 0.25rem;
+    }
+    .result-status-val {
+      font-family: 'Fraunces', serif; font-size: 1.15rem;
+      color: var(--cream-100); line-height: 1.2;
+    }
+    .result-status-badge {
+      display: inline-flex; align-items: center; gap: 0.35rem;
+      padding: 0.25rem 0.75rem; border-radius: 999px;
+      font-size: 0.72rem; font-weight: 700;
+      margin-top: 0.375rem;
+    }
+    .result-status-badge.pending { background: rgba(232,184,75,0.1); border: 1px solid rgba(232,184,75,0.3); color: var(--turmeric-400); }
+    .result-status-badge.confirmed { background: rgba(91,140,90,0.1); border: 1px solid rgba(91,140,90,0.3); color: var(--sage-400); }
+    .result-status-badge.expired { background: rgba(166,58,46,0.08); border: 1px solid rgba(166,58,46,0.25); color: var(--clay-400); }
+
+    /* Divider */
+    .result-divider { height: 1px; background: linear-gradient(90deg, transparent, var(--wood-700), transparent); margin: 0; }
+
+    /* Details */
+    .result-details { padding: 1.25rem 1.5rem; }
+    .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; margin-bottom: 1rem; }
+    .detail-item {}
+    .detail-item-label {
+      font-size: 0.65rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.12em;
+      color: var(--cream-400); margin-bottom: 0.2rem;
+    }
+    .detail-item-val { font-size: 0.875rem; color: var(--cream-100); font-weight: 600; }
+
+    /* Timeline */
+    .timeline-title {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.15em;
+      color: var(--cream-400); margin-bottom: 0.875rem;
+    }
+    .timeline { display: flex; flex-direction: column; gap: 0; margin-bottom: 1.25rem; }
+    .timeline-item { display: flex; gap: 0.875rem; position: relative; }
+    .timeline-item:not(:last-child) .timeline-line {
+      position: absolute; top: 22px; left: 10px; width: 1.5px; height: calc(100% + 8px);
+      background: var(--wood-700);
+    }
+    .timeline-dot {
+      width: 21px; height: 21px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem; margin-top: 1px;
+      border: 1.5px solid var(--wood-700);
+    }
+    .timeline-dot.done { background: var(--sage-500); border-color: var(--sage-500); color: white; }
+    .timeline-dot.active { background: var(--turmeric-400); border-color: var(--turmeric-400); color: var(--wood-950); animation: pulse-dot 1.5s infinite; }
+    .timeline-dot.idle { background: var(--wood-800); }
+    @keyframes pulse-dot { 0%,100%{box-shadow:0 0 0 0 rgba(232,184,75,0.4)} 50%{box-shadow:0 0 0 6px rgba(232,184,75,0)} }
+
+    .timeline-content { padding-bottom: 1rem; }
+    .timeline-label { font-size: 0.875rem; color: var(--cream-100); font-weight: 600; margin-bottom: 0.15rem; }
+    .timeline-desc { font-size: 0.75rem; color: var(--cream-400); line-height: 1.5; }
+
+    /* Total */
+    .result-total {
+      display: flex; align-items: center; justify-content: space-between;
+      background: rgba(201,151,62,0.06);
+      border: 1px solid rgba(201,151,62,0.15);
+      border-radius: 10px; padding: 0.875rem 1rem;
+      margin-bottom: 1.25rem;
+    }
+    .result-total-label { font-size: 0.78rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--cream-300); }
+    .result-total-val { font-family: 'Fraunces', serif; font-size: 1.25rem; color: var(--brass-200); }
+
+    /* CTA */
+    .result-cta { display: flex; gap: 0.75rem; }
+    .result-btn {
+      flex: 1; display: flex; align-items: center; justify-content: center; gap: 0.45rem;
+      padding: 0.75rem; border-radius: 10px;
+      font-size: 0.82rem; font-weight: 700; cursor: pointer;
+      transition: opacity 0.2s, transform 0.15s;
+      text-decoration: none; border: none;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+    }
+    .result-btn:hover { opacity: 0.87; transform: translateY(-1px); }
+    .result-btn.primary { background: linear-gradient(135deg, var(--clay-500), var(--clay-600)); color: var(--cream-100); }
+    .result-btn.secondary { background: var(--wood-800); border: 1px solid var(--wood-700) !important; color: var(--cream-200); }
+
+    /* NOT FOUND */
+    .not-found-card {
+      display: none;
+      width: 100%; max-width: 560px;
+      background: var(--wood-900);
+      border: 1px solid rgba(166,58,46,0.25);
+      border-radius: 20px;
+      padding: 2.5rem 1.75rem;
+      text-align: center;
+      position: relative; z-index: 1;
+      animation: slideUp 0.3s ease;
+    }
+    .not-found-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+    .not-found-title { font-family: 'Fraunces', serif; font-size: 1.25rem; color: var(--cream-100); margin-bottom: 0.5rem; }
+    .not-found-desc { font-size: 0.875rem; color: var(--cream-400); line-height: 1.65; }
+
+    /* RECENT HISTORY */
+    .recent-section {
+      width: 100%; max-width: 560px;
+      margin-top: 1.5rem;
+      position: relative; z-index: 1;
+    }
+    .recent-title {
+      font-size: 0.68rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.18em;
+      color: var(--cream-400); margin-bottom: 0.875rem;
+    }
+    .recent-list { display: flex; flex-direction: column; gap: 0.5rem; }
+    .recent-item {
+      background: var(--wood-900); border: 1px solid var(--wood-800);
+      border-radius: 12px; padding: 0.875rem 1rem;
+      display: flex; align-items: center; justify-content: space-between;
+      cursor: pointer; transition: border-color 0.2s;
+    }
+    .recent-item:hover { border-color: var(--wood-700); }
+    .recent-code { font-family: 'JetBrains Mono', monospace; font-size: 0.82rem; color: var(--brass-300); }
+    .recent-name { font-size: 0.75rem; color: var(--cream-400); margin-top: 0.15rem; }
+    .recent-badge {
+      padding: 0.2rem 0.625rem; border-radius: 999px;
+      font-size: 0.65rem; font-weight: 700; flex-shrink: 0;
+    }
+    .recent-badge.pending { background: rgba(232,184,75,0.1); color: var(--turmeric-400); }
+    .recent-badge.confirmed { background: rgba(91,140,90,0.1); color: var(--sage-400); }
+    .recent-badge.expired { background: rgba(166,58,46,0.08); color: var(--clay-400); }
+
+    @media (max-width: 400px) {
+      .detail-grid { grid-template-columns: 1fr; }
+      .result-cta { flex-direction: column; }
+    }
+  </style>
+  <link rel="stylesheet" href="assets/phase75-ui.css">
+</head>
+<body>
+
+<!-- TOP NAV -->
+<div class="top-nav">
+  <a href="index.html" id="back-home">← Beranda</a>
+  <div class="top-nav-logo">
+    <div class="top-nav-logo-icon"><img src="assets/pendopo-wonomarto-logo.png" alt="Logo Pendopo Wonomarto"></div>
+    <span class="top-nav-logo-text">Sego Abang</span>
+  </div>
+  <a href="customer.html" id="order-link">Pesan →</a>
+</div>
+
+<!-- HERO -->
+<div class="hero-section">
+  <span class="hero-icon">🔎</span>
+  <h1 class="hero-title">Lacak Pesanan Anda</h1>
+  <p class="hero-desc">Masukkan kode booking untuk mengecek status pesanan Anda secara real-time.</p>
+</div>
+
+<!-- SEARCH -->
+<div class="search-card">
+  <label class="search-label" for="searchInput">Kode Booking</label>
+  <div class="search-row">
+    <input
+      type="text"
+      id="searchInput"
+      class="search-input"
+      placeholder="Contoh: SGA-20240808-1234"
+      autocomplete="off"
+      spellcheck="false"
+    />
+    <button class="search-btn" id="searchBtn" onclick="doSearch()">
+      🔍 Cek
+    </button>
+  </div>
+  <p class="search-hint">Kode booking dikirim ke WhatsApp Anda atau lihat di halaman konfirmasi. Format: <code>SGA-YYYYMMDD-XXXX</code></p>
+</div>
+
+<!-- RESULT -->
+<div class="result-card" id="resultCard">
+
+  <!-- Realtime indicator -->
+  <div style="display:flex;align-items:center;gap:0.5rem;padding:0.625rem 1.5rem 0;justify-content:flex-end">
+    <span id="realtimeDot" style="width:7px;height:7px;border-radius:50%;background:var(--wood-600);display:inline-block;flex-shrink:0"></span>
+    <span id="realtimeText" style="font-size:0.65rem;color:rgba(220,205,178,0.4)">–</span>
+  </div>
+
+  <div class="result-status-header">
+    <div class="result-status-icon" id="resultStatusIcon">❓</div>
+    <div class="result-status-info">
+      <div class="result-status-label">Status Pesanan</div>
+      <div class="result-status-val" id="resultBookingCode">—</div>
+      <div class="result-status-badge" id="resultStatusBadge">—</div>
+    </div>
+  </div>
+
+  <!-- Countdown timer (hanya muncul saat PENDING) -->
+  <div id="countdownWrap" style="display:none;align-items:center;justify-content:center;gap:0.75rem;padding:0.75rem 1.5rem;background:rgba(232,184,75,0.06);border-top:1px solid rgba(232,184,75,0.1);border-bottom:1px solid rgba(232,184,75,0.1)">
+    <span style="font-size:0.72rem;color:var(--cream-400)">⏳ Batas waktu pembayaran:</span>
+    <span id="countdownTimer" style="font-family:'JetBrains Mono',monospace;font-size:1.25rem;font-weight:700;color:var(--turmeric-400);letter-spacing:0.05em">--:--</span>
+  </div>
+
+  <div class="result-divider"></div>
+  <div class="result-details">
+    <div class="detail-grid">
+      <div class="detail-item">
+        <div class="detail-item-label">Nama</div>
+        <div class="detail-item-val" id="detailName">—</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-item-label">Meja</div>
+        <div class="detail-item-val" id="detailTable">—</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-item-label">Tamu</div>
+        <div class="detail-item-val" id="detailGuest">—</div>
+      </div>
+      <div class="detail-item">
+        <div class="detail-item-label">Batas Waktu</div>
+        <div class="detail-item-val" id="detailTime">—</div>
+      </div>
+    </div>
+
+    <div class="result-divider" style="margin: 0.75rem 0;"></div>
+
+    <!-- Timeline -->
+    <div class="timeline-title">📋 Alur Pesanan</div>
+    <div class="timeline" id="resultTimeline">
+      <!-- injected -->
+    </div>
+
+    <!-- Total -->
+    <div class="result-total">
+      <div class="result-total-label">Total Tagihan</div>
+      <div class="result-total-val" id="detailTotal">—</div>
+    </div>
+
+    <!-- CTA -->
+    <div class="result-cta">
+      <a href="#" class="result-btn primary" id="viewReceiptBtn">🧾 Lihat Struk</a>
+      <button class="result-btn secondary" id="shareBtn">📤 Bagikan</button>
+      <a href="customer.html" class="result-btn secondary" id="newOrderBtn">➕ Pesan Baru</a>
+    </div>
+  </div>
+</div>
+
+<!-- NOT FOUND -->
+<div class="not-found-card" id="notFoundCard">
+  <span class="not-found-icon">🤔</span>
+  <h2 class="not-found-title">Pesanan Tidak Ditemukan</h2>
+  <p class="not-found-desc">Kode booking <strong id="notFoundCode"></strong> tidak ditemukan. Pastikan kode yang Anda masukkan benar (huruf besar &amp; angka).</p>
+</div>
+
+<!-- RECENT HISTORY -->
+<div class="recent-section" id="recentSection" style="display:none;">
+  <div class="recent-title">🕐 Riwayat Pencarian Terakhir</div>
+  <div class="recent-list" id="recentList"></div>
+</div>
+
+<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+<script>
+const API_BASE = '/api';
+const SOCKET_URL = window.location.origin;
+const HISTORY_KEY = 'sga_track_history';
+
+const STATUS_CONFIG = {
+  PENDING_PAYMENT: { label: 'Menunggu Pembayaran', icon: '⏳', cls: 'pending', badgeCls: 'pending' },
+  CONFIRMED:       { label: 'Terkonfirmasi ✓',    icon: '✅', cls: 'confirmed', badgeCls: 'confirmed' },
+  EXPIRED:         { label: 'Kedaluwarsa',          icon: '⏰', cls: 'expired',  badgeCls: 'expired' },
+  CANCELLED:       { label: 'Dibatalkan',           icon: '❌', cls: 'expired',  badgeCls: 'expired' },
+};
+
+let currentBooking = null;
+let countdownInterval = null;
+let socket = null;
+
+// ─── SOCKET.IO REALTIME ────────────────────────────────────────────────
+function connectSocket(bookingCode) {
+  if (socket) socket.disconnect();
+  try {
+    socket = io(SOCKET_URL, { transports: ['websocket', 'polling'] });
+    socket.on('connect', () => {
+      console.log('[TRACK] Socket connected');
+      updateRealtimeDot(true);
+    });
+    socket.on('disconnect', () => updateRealtimeDot(false));
+
+    // Dengarkan perubahan status booking
+    socket.on('booking:status_changed', (payload) => {
+      if (payload.booking_code === bookingCode || payload.id === currentBooking?.id) {
+        // Refresh data dari API
+        doSearch(bookingCode, true);
+      }
+    });
+    // Juga dengarkan event konfirmasi spesifik
+    socket.on('booking:confirmed', (payload) => {
+      if (payload.booking_code === bookingCode) doSearch(bookingCode, true);
+    });
+  } catch(e) {
+    console.warn('[TRACK] Socket error:', e);
+  }
+}
+
+function updateRealtimeDot(connected) {
+  const dot = document.getElementById('realtimeDot');
+  const text = document.getElementById('realtimeText');
+  if (!dot) return;
+  dot.style.background = connected ? 'var(--sage-500)' : 'var(--wood-600)';
+  dot.style.animation = connected ? 'pulse-dot 1.5s infinite' : 'none';
+  if (text) text.textContent = connected ? 'Memantau real-time' : 'Offline';
+}
+
+// ─── COUNTDOWN TIMER ──────────────────────────────────────────────────
+function startCountdown(expiresAt) {
+  clearInterval(countdownInterval);
+  const el = document.getElementById('countdownTimer');
+  if (!el) return;
+
+  function tick() {
+    const now = Date.now();
+    const exp = new Date(expiresAt).getTime();
+    const diff = Math.max(0, Math.floor((exp - now) / 1000));
+    const m = Math.floor(diff / 60);
+    const s = diff % 60;
+    el.textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}`;
+    el.style.color = diff < 120 ? 'var(--clay-400)' : 'var(--turmeric-400)';
+    if (diff === 0) {
+      clearInterval(countdownInterval);
+      el.textContent = 'Expired';
+      // Auto-refresh untuk update status
+      setTimeout(() => { if (currentBooking) doSearch(currentBooking.booking_code, true); }, 2000);
+    }
+  }
+  tick();
+  countdownInterval = setInterval(tick, 1000);
+}
+
+// ─── HISTORY ──────────────────────────────────────────────────────────
+function saveHistory(booking) {
+  try {
+    let history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    history = history.filter(h => h.code !== booking.booking_code);
+    history.unshift({ code: booking.booking_code, name: booking.customer_name, status: booking.status, table: booking.table_number, savedAt: Date.now() });
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(history.slice(0, 5)));
+    renderHistory();
+  } catch(e) {}
+}
+
+function renderHistory() {
+  try {
+    const history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]');
+    const section = document.getElementById('recentSection');
+    const list = document.getElementById('recentList');
+    if (history.length === 0) { section.style.display = 'none'; return; }
+    section.style.display = 'block';
+    const STATUS_LABEL = { PENDING_PAYMENT:'Pending', CONFIRMED:'Confirmed', EXPIRED:'Expired', CANCELLED:'Cancelled' };
+    list.innerHTML = history.map(h => `
+      <div class="recent-item" onclick="quickSearch('${h.code}')">
+        <div>
+          <div class="recent-code">${h.code}</div>
+          <div class="recent-name">${h.name} · Meja ${h.table}</div>
+        </div>
+        <span class="recent-badge ${h.status === 'CONFIRMED' ? 'confirmed' : h.status === 'PENDING_PAYMENT' ? 'pending' : 'expired'}">
+          ${STATUS_LABEL[h.status] || h.status}
+        </span>
+      </div>
+    `).join('');
+  } catch(e) {}
+}
+
+function quickSearch(code) {
+  document.getElementById('searchInput').value = code;
+  doSearch();
+}
+
+// ─── TIMELINE ─────────────────────────────────────────────────────────
+function buildTimeline(booking) {
+  const expired = ['EXPIRED', 'CANCELLED'].includes(booking.status);
+  const steps = [
+    { label: 'Pesanan Dibuat', desc: `${fmtDateTime(booking.created_at)} — Meja dikunci.`, done: true, active: false },
+    {
+      label: 'Pembayaran QRIS',
+      desc: booking.status === 'PENDING_PAYMENT' ? '⏳ Menunggu konfirmasi staf...'
+          : booking.status === 'CONFIRMED' ? `✅ Diterima pada ${fmtDateTime(booking.confirmed_at)}`
+          : '❌ Waktu habis / dibatalkan.',
+      done: booking.status === 'CONFIRMED', active: booking.status === 'PENDING_PAYMENT' && !expired,
+    },
+    {
+      label: 'Pesanan Terkonfirmasi',
+      desc: booking.status === 'CONFIRMED'
+        ? `🎉 Dikonfirmasi oleh staf. Selamat datang!`
+        : 'Staf akan konfirmasi setelah pembayaran.',
+      done: booking.status === 'CONFIRMED', active: false,
+    },
+    { label: 'Selamat Menikmati! 🍚', desc: 'Tunjukkan kode booking ke staf saat tiba.', done: booking.status === 'CONFIRMED', active: false },
+  ];
+
+  return steps.map((step, i) => `
+    <div class="timeline-item">
+      <div class="timeline-line"></div>
+      <div class="timeline-dot ${step.done ? 'done' : step.active ? 'active' : 'idle'}">${step.done ? '✓' : i+1}</div>
+      <div class="timeline-content">
+        <div class="timeline-label" style="color:${step.done ? 'var(--sage-400)' : step.active ? 'var(--turmeric-400)' : 'var(--cream-300)'}">
+          ${step.label}
+        </div>
+        <div class="timeline-desc">${step.desc}</div>
+      </div>
+    </div>
+  `).join('');
+}
+
+// ─── FORMAT HELPERS ───────────────────────────────────────────────────
+function fmt(num) { return 'Rp ' + Number(num).toLocaleString('id-ID'); }
+function fmtDateTime(iso) {
+  if (!iso) return '—';
+  return new Date(iso).toLocaleString('id-ID', { day:'2-digit', month:'short', year:'numeric', hour:'2-digit', minute:'2-digit', timeZone:'Asia/Jakarta' }) + ' WIB';
+}
+
+// ─── SEARCH ───────────────────────────────────────────────────────────
+async function doSearch(overrideCode, silent = false) {
+  const paramsNow = new URLSearchParams(window.location.search);
+  const savedAccess = JSON.parse(localStorage.getItem('booking_access') || 'null');
+  const accessToken = paramsNow.get('token') || savedAccess?.token || '';
+  let code = overrideCode || document.getElementById('searchInput').value.trim().toUpperCase();
+  if (!code) { document.getElementById('searchInput').focus(); return; }
+
+  if (!silent) {
+    document.getElementById('resultCard').style.display = 'none';
+    document.getElementById('notFoundCard').style.display = 'none';
+  }
+
+  const btn = document.getElementById('searchBtn');
+  if (!silent) { btn.disabled = true; btn.innerHTML = '<span class="search-spinner"></span> Mencari...'; }
+
+  try {
+    const res = await fetch(`${API_BASE}/bookings/${encodeURIComponent(code)}/status${accessToken ? '?token='+encodeURIComponent(accessToken) : ''}`);
+    if (!res.ok) { showNotFound(code); return; }
+    const data = await res.json();
+    const booking = data.booking;
+    if (!booking) { showNotFound(code); return; }
+
+    currentBooking = booking; localStorage.setItem('booking_access', JSON.stringify({code:booking.booking_code,token:accessToken}));
+    renderResult(booking);
+    saveHistory(booking);
+
+    // Connect socket for realtime
+    connectSocket(booking.booking_code);
+
+    // Start countdown if pending
+    clearInterval(countdownInterval);
+    if (booking.status === 'PENDING_PAYMENT' && booking.expires_at) {
+      startCountdown(booking.expires_at);
+    }
+
+  } catch(e) {
+    console.error('[TRACK]', e);
+    if (!silent) showNotFound(code);
+  } finally {
+    if (!silent) { btn.disabled = false; btn.innerHTML = '🔍 Cek'; }
+  }
+}
+
+function renderResult(booking) {
+  const cfg = STATUS_CONFIG[booking.status] || { label: booking.status, icon: '❓', cls: 'pending', badgeCls: 'pending' };
+
+  document.getElementById('resultStatusIcon').textContent = cfg.icon;
+  document.getElementById('resultStatusIcon').className = `result-status-icon ${cfg.cls}`;
+  document.getElementById('resultBookingCode').textContent = booking.booking_code;
+
+  const badge = document.getElementById('resultStatusBadge');
+  badge.textContent = cfg.label;
+  badge.className = `result-status-badge ${cfg.badgeCls}`;
+
+  document.getElementById('detailName').textContent = booking.customer_name || '—';
+  document.getElementById('detailTable').textContent = `Meja ${booking.table_number}`;
+  document.getElementById('detailGuest').textContent = `${booking.guest_count || 1} orang`;
+  document.getElementById('detailTime').textContent = fmtDateTime(booking.expires_at);
+  document.getElementById('detailTotal').textContent = fmt(booking.total_amount);
+
+  document.getElementById('resultTimeline').innerHTML = buildTimeline(booking);
+  document.getElementById('viewReceiptBtn').href = `receipt.html?code=${encodeURIComponent(booking.booking_code)}&token=${encodeURIComponent(JSON.parse(localStorage.getItem('booking_access')||'null')?.token||'')}`;
+
+  // Countdown display
+  const countdownWrap = document.getElementById('countdownWrap');
+  if (countdownWrap) {
+    countdownWrap.style.display = booking.status === 'PENDING_PAYMENT' ? 'flex' : 'none';
+  }
+
+  // Share button
+  const shareBtn = document.getElementById('shareBtn');
+  if (shareBtn) {
+    shareBtn.onclick = () => shareBooking(booking);
+  }
+
+  const rc = document.getElementById('resultCard');
+  rc.style.display = 'block';
+  setTimeout(() => rc.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+}
+
+function showNotFound(code) {
+  document.getElementById('notFoundCode').textContent = `"${code}"`;
+  const nf = document.getElementById('notFoundCard');
+  nf.style.display = 'block';
+  setTimeout(() => nf.scrollIntoView({ behavior: 'smooth', block: 'nearest' }), 100);
+}
+
+// ─── SHARE ────────────────────────────────────────────────────────────
+function shareBooking(booking) {
+  const access = JSON.parse(localStorage.getItem('booking_access')||'null');
+  const text = `🍚 *RM. Sego Abang Pendopo Wonomarto*\nKode Booking: *${booking.booking_code}*\nMeja: ${booking.table_number} · ${booking.guest_count || 1} tamu\nTotal: Rp ${Number(booking.total_amount).toLocaleString('id-ID')}\nStatus: ${STATUS_CONFIG[booking.status]?.label || booking.status}\n\nLacak pesanan: ${location.origin}/track.html?code=${booking.booking_code}&token=${encodeURIComponent(access?.token||'')}`;
+  if (navigator.share) {
+    navigator.share({ title: 'Lacak Pesanan Sego Abang Pendopo Wonomarto', text }).catch(() => {});
+  } else {
+    const wa = `https://wa.me/?text=${encodeURIComponent(text)}`;
+    window.open(wa, '_blank');
+  }
+}
+
+// ─── EVENT LISTENERS ──────────────────────────────────────────────────
+document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+document.getElementById('searchInput').addEventListener('input', function() { this.value = this.value.toUpperCase(); });
+
+// ─── AUTO-SEARCH dari URL ─────────────────────────────────────────────
+const params = new URLSearchParams(window.location.search);
+const preCode = params.get('code');
+if (preCode) {
+  document.getElementById('searchInput').value = preCode.toUpperCase();
+  doSearch();
+}
+
+// ─── INIT ─────────────────────────────────────────────────────────────
+renderHistory();
+
+// ─── SERVICE WORKER ───────────────────────────────────────────────────
+if ('serviceWorker' in navigator) navigator.serviceWorker.register('/sw.js').catch(() => {});
+</script>
+</body>
+</html>

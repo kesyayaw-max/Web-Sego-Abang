@@ -1,0 +1,84 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Reservasi & Pre-Order — RM. Sego Abang</title>
+<link rel="icon" href="favicon.ico">
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600;700&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box}body{margin:0;background:#1b1410;color:#ede3d3;font-family:'Plus Jakarta Sans',sans-serif}
+.wrap{max-width:1100px;margin:auto;padding:24px}.top{display:flex;justify-content:space-between;align-items:center;padding:8px 0 24px}.brand{font:700 1.35rem Fraunces;color:#f4ede0;display:flex;align-items:center;gap:.6rem}.brand img{width:50px;height:38px;object-fit:contain}.back{color:#dccdb2;text-decoration:none;font-size:.8rem}
+h1,h2{font-family:Fraunces;margin:0 0 8px}.hero{padding:28px 0}.muted{color:#bcae98;font-size:.82rem;line-height:1.6}
+.grid{display:grid;grid-template-columns:1fr 1.15fr;gap:18px}.card{background:#2c221c;border:1px solid #4a3b31;border-radius:16px;padding:20px}
+label{display:block;font-size:.72rem;font-weight:700;margin:12px 0 6px}.input,.select{width:100%;padding:12px;border-radius:10px;border:1px solid #4a3b31;background:#211815;color:#f4ede0;outline:none}.input:focus,.select:focus{border-color:#c9973e}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:10px}.tables,.menus{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:10px}.table,.menu{border:1px solid #4a3b31;background:#211815;border-radius:12px;padding:12px;cursor:pointer}.table.active,.menu.selected{border-color:#c9973e;background:#3a2e26}.table.disabled{opacity:.4;cursor:not-allowed}.table b,.menu b{display:block}.small{font-size:.66rem;color:#a99b86;margin-top:3px}.menu{display:grid;grid-template-columns:56px 1fr;gap:9px}.menu img{width:56px;height:56px;object-fit:cover;border-radius:9px;background:#3a2e26}.qty{display:flex;align-items:center;gap:7px;margin-top:7px}.qty button{border:1px solid #5e4b3f;background:#3a2e26;color:#ede3d3;border-radius:7px;width:27px;height:27px}.qty span{min-width:18px;text-align:center}.summary{position:sticky;top:20px}.line{display:flex;justify-content:space-between;gap:12px;padding:7px 0;border-bottom:1px solid #3a2e26;font-size:.78rem}.total{font-size:1rem;font-weight:800;padding-top:12px}.btn{width:100%;border:0;border-radius:11px;padding:13px;font-weight:800;cursor:pointer;margin-top:14px}.primary{background:#c9973e;color:#1b1410}.ghost{background:#3a2e26;color:#ede3d3}.notice{padding:11px;border-radius:10px;background:#211815;border:1px solid #4a3b31;font-size:.72rem;line-height:1.5}.ok{border-color:#5b8c5a}.err{border-color:#a63a2e;color:#efb2a9}.code{font:700 1.1rem monospace;color:#edd08a}
+@media(max-width:800px){.grid{grid-template-columns:1fr}.summary{position:static}.row{grid-template-columns:1fr}.tables,.menus{grid-template-columns:1fr}}
+</style>
+  <link rel="stylesheet" href="assets/phase75-ui.css">
+</head>
+<body>
+<div class="wrap">
+  <div class="top"><a class="brand" href="/"><img src="assets/pendopo-wonomarto-logo.png" alt="Logo Pendopo Wonomarto"><span>RM. Sego Abang</span></a><a class="back" href="/">← Kembali</a></div>
+  <section class="hero">
+    <h1>Reservasi + Pre-Order</h1>
+    <p class="muted">Pilih waktu datang, meja, dan makanan dari rumah. Saat tiba, meja sudah disiapkan dan pesanan awal sudah tercatat. QR meja tetap bisa dipakai untuk pesanan tambahan.</p>
+  </section>
+  <div id="message" class="notice" style="display:none;margin-bottom:16px"></div>
+  <div class="grid">
+    <div>
+      <div class="card">
+        <h2>1. Waktu kunjungan</h2>
+        <div class="row">
+          <div><label>Tanggal</label><input id="date" class="input" type="date"></div>
+          <div><label>Jam</label><select id="time" class="select"></select></div>
+        </div>
+        <div class="row">
+          <div><label>Jumlah tamu</label><input id="guests" class="input" type="number" min="1" max="50" value="2"></div>
+          <div><label>Nama</label><input id="name" class="input" placeholder="Nama pemesan"></div>
+        </div>
+        <label>WhatsApp</label><input id="phone" class="input" placeholder="08xxxxxxxxxx" inputmode="tel">
+        <label>Catatan reservasi</label><textarea id="notes" class="input" rows="3" placeholder="Contoh: ulang tahun, butuh kursi anak, dll."></textarea>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h2>2. Pilih meja</h2>
+        <p class="muted">Meja hanya ditampilkan jika kapasitas cukup dan belum bentrok dengan reservasi lain.</p>
+        <div id="tables" class="tables"><div class="small">Isi tanggal, jam, dan jumlah tamu terlebih dahulu.</div></div>
+      </div>
+      <div class="card" style="margin-top:18px">
+        <h2>3. Pre-order makanan</h2>
+        <p class="muted">Opsional. Makanan yang dipilih akan tersimpan pada reservasi dan dapat dipersiapkan sebelum kedatangan.</p>
+        <div id="menus" class="menus"><div class="small">Memuat menu...</div></div>
+      </div>
+    </div>
+    <aside class="card summary">
+      <h2>Ringkasan</h2>
+      <div id="summary" class="muted">Belum ada meja dipilih.</div>
+      <div class="line total"><span>Total pre-order</span><span id="total">Rp0</span></div>
+      <button id="submit" class="btn primary">Kirim Reservasi</button>
+      <a href="reservation-lookup.html" class="btn ghost" style="display:block;text-align:center;text-decoration:none">Cek Status Reservasi</a>
+      <div class="notice" style="margin-top:12px">Pembayaran makanan <b>tidak dilakukan di halaman ini</b>. Saat datang, pembayaran dilakukan melalui QRIS resmi restoran atau kasir sesuai alur yang tersedia.</div>
+    </aside>
+  </div>
+</div>
+<script>
+const API='/api';
+const $=id=>document.getElementById(id);
+let selectedTable=null, menus=[], cart={};
+const rupiah=n=>new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0}).format(n);
+function msg(text,type=''){const el=$('message');el.textContent=text;el.className='notice '+type;el.style.display=text?'block':'none'}
+function localISO(date,time){return `${date}T${time}:00+07:00`}
+function setupTimes(){let s='';for(let h=10;h<=17;h++){for(let m of [0,30]){if(h===17&&m>30)continue;let x=`${String(h).padStart(2,'0')}:${String(m).padStart(2,'0')}`;s+=`<option value="${x}">${x}</option>`}}$('time').innerHTML=s}
+function tomorrow(){const d=new Date();d.setDate(d.getDate()+1);return d.toLocaleDateString('en-CA',{timeZone:'Asia/Jakarta'})}
+function renderTables(data){const box=$('tables'); if(!data.length){box.innerHTML='<div class="small">Tidak ada meja yang tersedia untuk slot ini.</div>';selectedTable=null;renderSummary();return}
+box.innerHTML=data.map(t=>`<div class="table ${selectedTable?.id===t.id?'active':''} ${t.available?'':'disabled'}" data-id="${t.id}">${t.photo_url?`<img src="${esc(t.photo_url)}" alt="Meja ${esc(t.table_number)}" style="width:100%;height:90px;object-fit:cover;border-radius:9px;margin-bottom:8px" onerror="this.style.display='none'">`:''}<b>Meja ${esc(t.table_number)}</b><div class="small">${t.capacity} orang · ${esc(t.zone||'Area utama')}</div><div class="small">${t.available?'Tersedia':'Sudah dipesan'}</div></div>`).join('');
+box.querySelectorAll('.table').forEach(el=>el.onclick=()=>{const t=data.find(x=>x.id===el.dataset.id);if(!t.available)return;selectedTable=t;renderTables(data);renderSummary()})}
+async function loadTables(){const date=$('date').value,time=$('time').value,guests=$('guests').value;if(!date||!time)return;try{const r=await fetch(`${API}/reservation-tables?reservation_at=${encodeURIComponent(localISO(date,time))}&guest_count=${guests}`);const d=await r.json();if(!r.ok)throw Error(d.message);renderTables(d.tables||[])}catch(e){msg(e.message,'err')}}
+function renderMenus(){const box=$('menus');box.innerHTML=menus.map(m=>{const q=cart[m.id]||0;return `<div class="menu ${q?'selected':''}"><img src="${m.image_url||'og-image.jpg'}" onerror="this.src='og-image.jpg'"><div><b>${esc(m.name)}</b><div class="small">${rupiah(m.price)}</div><div class="qty"><button onclick="change('${m.id}',-1)">−</button><span>${q}</span><button onclick="change('${m.id}',1)">+</button></div></div></div>`}).join('')||'<div class="small">Menu belum tersedia.</div>'}
+function change(id,n){cart[id]=Math.max(0,(cart[id]||0)+n);if(!cart[id])delete cart[id];renderMenus();renderSummary()}
+function renderSummary(){let total=0;let items=[];for(const [id,q] of Object.entries(cart)){const m=menus.find(x=>x.id===id);if(m){total+=Number(m.price)*q;items.push(`${q}× ${esc(m.name)}`)}}$('total').textContent=rupiah(total);$('summary').innerHTML=`<div class="line"><span>Waktu</span><b>${$('date').value||'-'} ${$('time').value||''}</b></div><div class="line"><span>Tamu</span><b>${$('guests').value}</b></div><div class="line"><span>Meja</span><b>${selectedTable?`Meja ${esc(selectedTable.table_number)}`:'Belum dipilih'}</b></div>${items.length?`<div style="margin-top:10px"><b>Pre-order</b>${items.map(x=>`<div class="small">${x}</div>`).join('')}</div>`:'<div class="small" style="margin-top:10px">Tidak ada pre-order.</div>'}`}
+function esc(x){return String(x??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[c]))}
+async function loadMenus(){try{const r=await fetch(API+'/menus');const d=await r.json();menus=d.menus||[];menus=menus.filter(m=>m.stock_status==='AVAILABLE');renderMenus()}catch(e){$('menus').innerHTML='<div class="small">Gagal memuat menu.</div>'}}
+async function submit(){msg('');const date=$('date').value,time=$('time').value,guests=Number($('guests').value),name=$('name').value.trim(),phone=$('phone').value.trim();if(!selectedTable)return msg('Silakan pilih meja.','err');if(!name||!phone)return msg('Nama dan WhatsApp wajib diisi.','err');const items=Object.entries(cart).map(([menu_id,quantity])=>({menu_id,quantity}));$('submit').disabled=true;$('submit').textContent='Mengirim...';try{const r=await fetch(API+'/reservations',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({customer_name:name,customer_phone:phone,guest_count:guests,reservation_at:localISO(date,time),table_id:selectedTable.id,notes:$('notes').value.trim(),items})});const d=await r.json();if(!r.ok)throw Error(d.message);msg(`Reservasi berhasil dibuat. Kode: ${d.reservation.reservation_code} · Simpan token akses Anda.`,'ok'); localStorage.setItem('reservation_access', JSON.stringify({code:d.reservation.reservation_code,token:d.reservation.lookup_token,phone}));$('submit').textContent='Reservasi Terkirim';$('submit').disabled=true;$('summary').innerHTML=`<div class="code">${esc(d.reservation.reservation_code)}</div><p class="muted">Meja ${esc(d.reservation.table_number)} · ${date} ${time}</p><p class="muted">Kode: <b>${esc(d.reservation.reservation_code)}</b></p><p class="muted">Token akses: <b style="word-break:break-all">${esc(d.reservation.lookup_token)}</b></p><p class="muted">Simpan kode + token + WhatsApp untuk cek status dari perangkat lain.</p>`}catch(e){msg(e.message,'err');$('submit').disabled=false;$('submit').textContent='Kirim Reservasi'}}
+setupTimes();$('date').value=tomorrow();$('date').min=tomorrow();$('date').max=(()=>{const d=new Date();d.setDate(d.getDate()+90);return d.toLocaleDateString('en-CA',{timeZone:'Asia/Jakarta'})})();['date','time','guests'].forEach(id=>$(id).addEventListener('change',loadTables));$('guests').addEventListener('input',loadTables);$('submit').onclick=submit;loadMenus();loadTables();
+</script>
+</body></html>

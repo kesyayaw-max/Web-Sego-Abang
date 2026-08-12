@@ -1,0 +1,78 @@
+<!doctype html><html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Pesan dari Meja — RM. Sego Abang</title><link rel="icon" href="favicon.ico"><link href="https://fonts.googleapis.com/css2?family=Fraunces:wght@500;600&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet"><style>
+:root{--bg:#1b1410;--card:#211815;--line:#3a2e26;--cream:#f8f0df;--muted:#a9977b;--gold:#e2bb72;--gold2:#c9973e;--sage:#9abd8b;--red:#d17a6b}*{box-sizing:border-box}body{margin:0;background:radial-gradient(circle at 50% -10%,#4a3425,#1b1410 45%);color:var(--cream);font-family:"Plus Jakarta Sans",sans-serif}.top{position:sticky;top:0;z-index:5;background:#1b1410eF;border-bottom:1px solid var(--line);padding:.9rem 1rem;backdrop-filter:blur(10px)}.topin{max-width:850px;margin:auto;display:flex;justify-content:space-between;align-items:center}.brand{font:600 1.1rem Fraunces,serif;display:flex;align-items:center;gap:.55rem}.brand img{width:42px;height:34px;object-fit:contain}.table-pill{padding:.45rem .7rem;border:1px solid #c9973e55;border-radius:20px;color:var(--gold);font-size:.75rem;font-weight:700}.wrap{max-width:850px;margin:auto;padding:1.2rem 1rem 7rem}.cat{margin:1.4rem 0 .65rem;font:600 1.35rem Fraunces,serif}.grid{display:grid;grid-template-columns:repeat(2,1fr);gap:.7rem}.item{background:var(--card);border:1px solid var(--line);border-radius:15px;overflow:hidden}.pic{height:145px;background:#2c221c;display:grid;place-items:center;font-size:3rem;position:relative}.pic img{width:100%;height:100%;object-fit:cover}.body{padding:.75rem}.name{font-weight:700;font-size:.85rem}.desc{font-size:.68rem;color:var(--muted);line-height:1.45;margin:.3rem 0}.foot{display:flex;align-items:center;justify-content:space-between;gap:.5rem}.price{font-weight:700;color:var(--gold);font-size:.8rem}.add{width:34px;height:34px;border:0;border-radius:10px;background:var(--gold2);color:#1b1410;font-size:1.2rem;font-weight:800;cursor:pointer}.add:disabled{opacity:.4}.bar{position:fixed;bottom:0;left:0;right:0;background:#211815F7;border-top:1px solid var(--line);padding:.75rem 1rem;backdrop-filter:blur(10px)}.barin{max-width:850px;margin:auto;display:flex;justify-content:space-between;align-items:center;gap:1rem}.bar small{display:block;color:var(--muted);font-size:.68rem}.bar strong{color:var(--gold)}.checkout{border:0;border-radius:11px;padding:.75rem 1rem;background:linear-gradient(135deg,var(--gold),var(--gold2));color:#1b1410;font-weight:800;cursor:pointer}.pay-options{display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin:.45rem 0 1rem}.pay-option{border:1px solid var(--line);background:#2c221c;border-radius:11px;padding:.8rem;cursor:pointer;position:relative}.pay-option.active{border-color:var(--gold2);background:#c9973e12}.pay-option input{position:absolute;opacity:0}.pay-option b{display:block;font-size:.78rem}.pay-option span{display:block;color:var(--muted);font-size:.64rem;line-height:1.4;margin-top:.25rem}.payment-result{display:none;margin-top:.8rem;padding:.9rem;border:1px solid var(--line);border-radius:12px;background:#2c221c}.payment-result.open{display:block}.qris-box{text-align:center;padding:.5rem}.qris-box img{max-width:220px;width:100%;background:#fff;border-radius:10px;padding:8px}.cash-box{font-size:.75rem;color:var(--muted);line-height:1.6}.result-code{font:700 1rem ui-monospace,monospace;color:var(--gold)}.overlay{display:none;position:fixed;inset:0;background:#0009;z-index:20;align-items:end;justify-content:center}.overlay.open{display:flex}.sheet{background:#211815;border:1px solid var(--line);border-radius:20px 20px 0 0;width:min(560px,100%);padding:1.1rem;max-height:90vh;overflow:auto}.row{display:flex;justify-content:space-between;gap:1rem;padding:.55rem 0;border-bottom:1px solid var(--line);font-size:.8rem}.input{width:100%;background:#2c221c;border:1px solid var(--line);color:var(--cream);border-radius:9px;padding:.7rem;font:inherit;margin:.35rem 0 .8rem}.btn{width:100%;border:0;border-radius:10px;padding:.75rem;font-weight:800;cursor:pointer}.primary{background:var(--gold2);color:#1b1410}.ghost{background:#2c221c;color:var(--cream);border:1px solid var(--line);margin-top:.5rem}.note{font-size:.7rem;color:var(--muted);line-height:1.5;margin:.7rem 0}.empty{padding:2rem;text-align:center;color:var(--muted)}@media(max-width:560px){.grid{grid-template-columns:1fr}.pic{height:180px}}
+</style>  <link rel="stylesheet" href="assets/phase75-ui.css">
+</head><body>
+<header class="top"><div class="topin"><div class="brand"><img src="assets/pendopo-wonomarto-logo.png" alt="Logo Pendopo Wonomarto"><span>RM. Sego Abang</span></div><div class="table-pill" id="tablePill">Meja —</div></div></header>
+<main class="wrap"><p style="color:var(--muted);font-size:.75rem">Scan QR meja berhasil. Pilih makanan yang ingin diantar ke meja Anda.</p><div id="menu"></div></main>
+<div class="bar"><div class="barin"><div><small id="count">0 item</small><strong id="total">Rp 0</strong></div><button class="checkout" id="open">Lihat Pesanan</button></div></div>
+<div class="overlay" id="overlay"><div class="sheet"><h2 style="font:600 1.5rem Fraunces,serif;margin:.2rem 0 1rem">Pesanan <span id="sheetTable"></span></h2><div id="cart"></div><div style="margin-top:1rem"><label style="font-size:.7rem;font-weight:700">Nama / panggilan *</label><input class="input" id="name" placeholder="Contoh: Budi"><label style="font-size:.7rem;font-weight:700">WhatsApp *</label><input class="input" id="phone" placeholder="08xxxxxxxxxx" inputmode="tel"><label style="font-size:.7rem;font-weight:700">Catatan meja (opsional)</label><input class="input" id="note" placeholder="Contoh: tanpa pedas"></div>
+<div style="font-size:.7rem;font-weight:700;margin-bottom:.4rem">Pilih pembayaran</div>
+<div class="pay-options">
+  <label class="pay-option active" id="payQris"><input type="radio" name="payment" value="QRIS_STATIC" checked><b>📱 QRIS</b><span id="qrisHelp">Memuat status QRIS...</span></label>
+  <label class="pay-option" id="payCash"><input type="radio" name="payment" value="CASHIER"><b>💵 Bayar di Kasir</b><span>Pesanan masuk, lalu bayar langsung ke kasir.</span></label>
+</div>
+<p class="note">Pembayaran akan dikonfirmasi oleh kasir/admin. Untuk QRIS production, QRIS resmi milik client dipasang setelah data merchant diterima.</p>
+<button class="btn primary" id="send">Kirim Pesanan</button>
+<div class="payment-result" id="paymentResult"></div>
+<button class="btn ghost" id="close">Kembali ke Menu</button><div id="msg" style="font-size:.72rem;color:var(--red);margin-top:.5rem"></div></div></div>
+<script>
+const API='/api'; const params=new URLSearchParams(location.search); const tableNumber=params.get('table')||''; const qrToken=params.get('token')||'';
+let table=null,menus=[],cats=[],cart={};
+const esc=s=>String(s??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const rupiah=n=>'Rp '+Number(n).toLocaleString('id-ID');
+async function init(){
+ let tr;
+ if(qrToken){
+   const rr=await fetch(API+'/tables/qr/'+encodeURIComponent(qrToken));
+   tr=await rr.json(); table=tr.table||null;
+ } else {
+   tr=await fetch(API+'/tables').then(r=>r.json()); table=(tr.tables||[]).find(x=>x.table_number.toLowerCase()===tableNumber.toLowerCase());
+ }
+ if(!table){document.getElementById('menu').innerHTML='<div class="empty">QR meja tidak dikenali. Silakan scan QR yang terpasang di meja.</div>';document.getElementById('open').disabled=true;return}
+ document.getElementById('tablePill').textContent='Meja '+table.table_number; document.getElementById('sheetTable').textContent=table.table_number;
+ const [mr,cr]=await Promise.all([fetch(API+'/menus?active=true').then(r=>r.json()),fetch(API+'/categories').then(r=>r.json())]);menus=mr.menus||[];cats=cr.categories||[];render();
+}
+function render(){document.getElementById('menu').innerHTML=cats.map(c=>{const ms=menus.filter(m=>m.category_id===c.id);if(!ms.length)return'';return `<h2 class="cat">${esc(c.name)}</h2><div class="grid">${ms.map(m=>{const q=cart[m.id]||0;const out=m.stock_status==='OUT_OF_STOCK';return `<article class="item"><div class="pic">${m.image_url?`<img src="${esc(m.image_url)}" alt="${esc(m.name)}">`:'🍚'}</div><div class="body"><div class="name">${esc(m.name)}</div><div class="desc">${esc(m.description||'')}</div><div class="foot"><span class="price">${rupiah(m.price)}</span><button class="add" ${out?'disabled':''} onclick="add('${m.id}')">${out?'×':'+'}</button></div></div></article>`}).join('')}</div>`}).join('')||'<div class="empty">Menu belum tersedia.</div>';updateBar()}
+function add(id){cart[id]=(cart[id]||0)+1;updateBar();render()}
+function updateBar(){let total=0,count=0;for(const [id,q] of Object.entries(cart)){const m=menus.find(x=>x.id===id);if(m){total+=Number(m.price)*q;count+=q}}document.getElementById('count').textContent=`${count} item`;document.getElementById('total').textContent=rupiah(total)}
+document.getElementById('open').onclick=()=>{renderCart();document.getElementById('overlay').classList.add('open')};
+document.getElementById('close').onclick=()=>document.getElementById('overlay').classList.remove('open');
+function renderCart(){const rows=Object.entries(cart).filter(([,q])=>q>0).map(([id,q])=>{const m=menus.find(x=>x.id===id);return `<div class="row"><span>${q}× ${esc(m.name)}</span><b>${rupiah(Number(m.price)*q)}</b></div>`}).join('');document.getElementById('cart').innerHTML=rows||'<div class="empty">Belum ada menu.</div>'}
+document.querySelectorAll('.pay-option').forEach(el=>el.addEventListener('click',()=>{document.querySelectorAll('.pay-option').forEach(x=>x.classList.remove('active'));el.classList.add('active');el.querySelector('input').checked=true;}));
+async function initPaymentOptions(){
+ try{
+   const q=document.getElementById('payQris');
+   document.getElementById('qrisHelp').textContent='QRIS dinamis: nominal dikunci server setelah pesanan dibuat.';
+ }catch(e){}
+}
+initPaymentOptions();
+document.getElementById('send').onclick=async()=>{
+ const name=document.getElementById('name').value.trim(),phone=document.getElementById('phone').value.trim(),msg=document.getElementById('msg');
+ const payment_method=document.querySelector('input[name="payment"]:checked')?.value||'QRIS';
+ const items=Object.entries(cart).filter(([,q])=>q>0).map(([id,q])=>({menu_id:id,quantity:q,notes:document.getElementById('note').value.trim()}));
+ if(!items.length){msg.textContent='Pilih minimal satu menu.';return}
+ if(!name){msg.textContent='Nama/panggilan wajib diisi.';return} if(!/^(\+62|62|0)[0-9]{8,13}$/.test(phone)){msg.textContent='Nomor WhatsApp tidak valid.';return}
+ const btn=document.getElementById('send');btn.disabled=true;btn.textContent='Mengirim...';
+ try{
+   const r=await fetch(API+'/bookings',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({
+     table_id:table.id,customer_name:name,customer_phone:phone,guest_count:1,items,payment_method
+   })});
+   const d=await r.json(); if(!r.ok)throw Error(d.message);
+   if(d.booking){
+     btn.style.display='none';
+     document.getElementById('paymentResult').classList.add('open');
+     if(payment_method==='CASHIER'){
+       document.getElementById('paymentResult').innerHTML=`<div class="cash-box">💵 <b style="color:var(--cream)">Bayar di Kasir</b><br>Silakan tunjukkan kode pesanan <span class="result-code">${d.booking.booking_code}</span> kepada kasir dan lakukan pembayaran. Setelah dibayar, kasir/admin akan mengonfirmasi pesanan.</div>`;
+     }else{
+       document.getElementById('paymentResult').innerHTML='<div class="qris-box"><div style="font-weight:800;margin-bottom:.45rem">📱 Menyiapkan QRIS...</div><div style="font-size:.7rem;color:var(--muted)">Nominal pembayaran dikunci oleh server.</div></div>';
+       const pr=await fetch(API+'/payments/create',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({booking_code:d.booking.booking_code,token:d.booking.public_token,idempotency_key:'WEB-'+d.booking.booking_code})});
+       const pd=await pr.json(); if(!pr.ok) throw Error(pd.message||'Gagal membuat QRIS');
+       const pay=pd.payment||{};
+       document.getElementById('paymentResult').innerHTML=`<div class="qris-box"><div style="font-weight:800;margin-bottom:.45rem">📱 Scan QRIS</div>${pay.qr_image_url?`<img src="${esc(pay.qr_image_url)}" alt="QRIS pembayaran">`:pay.qr_payload?`<div style="padding:1rem;border:1px dashed var(--line);font-size:.68rem;word-break:break-all">${esc(pay.qr_payload)}</div>`:'<div style="padding:1.5rem 0;color:var(--muted);font-size:.72rem">Provider QRIS belum mengembalikan gambar QR. Hubungi kasir.</div>'}<div style="font-weight:800;color:var(--gold);margin-top:.45rem">Total ${rupiah(pay.locked_amount||d.booking.total_amount)}</div><div style="font-size:.65rem;color:var(--muted);margin-top:.35rem">Kode: ${d.booking.booking_code}<br>Status akan berubah otomatis setelah webhook pembayaran.</div></div>`;
+     }
+     cart={};updateBar();
+   }
+ }catch(e){msg.textContent=e.message;btn.disabled=false;btn.textContent='Kirim Pesanan'}
+}
+init();
+</script></body></html>
