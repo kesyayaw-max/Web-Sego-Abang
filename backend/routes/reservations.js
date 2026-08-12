@@ -19,7 +19,6 @@ function generateReservationCode() {
 const createValidation = [
   body('customer_name').trim().isLength({ min: 2, max: 120 }).withMessage('Nama minimal 2 karakter.'),
   body('customer_phone').trim().matches(/^(\+62|62|0)[0-9]{8,13}$/).withMessage('Format nomor WhatsApp tidak valid.'),
-  body('table_id').optional().isUUID(),
   body('guest_count').isInt({ min: 1, max: 50 }).withMessage('Jumlah tamu 1–50 orang.'),
   body('reservation_at').isISO8601().withMessage('Tanggal dan waktu reservasi tidak valid.'),
   body('table_id').optional({ nullable: true }).isUUID().withMessage('Meja pilihan tidak valid.'),
